@@ -1,0 +1,4 @@
+python facedetect.py abba.png haarcascade_frontalface_default.xml
+
+login: polina
+password: polina0polina

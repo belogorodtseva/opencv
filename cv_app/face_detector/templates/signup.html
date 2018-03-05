@@ -1,0 +1,29 @@
+{% extends "index.html" %}
+{% load staticfiles %}
+
+{% block headin %}
+
+{% endblock %}
+
+{% block content %}
+<h2>Sign up form</h2>
+
+<form method="post" class="form-horizontal">
+  {% csrf_token %}
+  {% for field in form %}
+    <p>
+      {{ field.label_tag }}
+      {{ field }}
+      {% for error in field.errors %}
+        <p id="error">{{ error }}</p>
+      {% endfor %}
+    </p>
+  {% endfor %}
+<button type="submit" class="btn btn-default">Sign UP</button>
+</form>
+
+{% endblock %}
+
+{% block scriptin %}
+
+{% endblock %}
