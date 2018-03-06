@@ -4,12 +4,14 @@ import sys
 # Get user supplied values
 imagePath = sys.argv[1]
 cascPath = "haarcascade_frontalface_default.xml"
-
+print (imagePath)
 # Create the haar cascade
 faceCascade = cv2.CascadeClassifier(cascPath)
 
 # Read the image
 image = cv2.imread(imagePath)
+if image is True:
+    print ("true")
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
 # Detect faces in the image
