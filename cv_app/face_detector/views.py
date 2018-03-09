@@ -4,8 +4,10 @@ from __future__ import unicode_literals
 import cv2
 import sys
 import os
+from django.conf import settings
 from django.shortcuts import render
-from face_detector.models import *
+from face_detector.models import Photos
+from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, render_to_response
@@ -24,6 +26,14 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.core.files.storage import FileSystemStorage
 import numpy as np
+import urllib
+from urlparse import urlparse
+from django.core.files import File
+from PIL import Image
+from numpy import array
+import StringIO
+
+from django.core.files.uploadedfile import InMemoryUploadedFile
 
 
 
@@ -49,13 +59,13 @@ def index(request):
         fs = FileSystemStorage()
         filename = fs.save(myfile.name, myfile)
         uploaded_file_url = fs.url(filename)
-        result = detect(uploaded_file_url)
+        result = detect(request,uploaded_file_url)
         return render(request, 'mainpage.html', {
             'result': result
         })
     return render(request, 'mainpage.html')
 
-def detect(url):
+def detect(request, url):
 
     cascPath = "haarcascade_frontalface_default.xml"
 
@@ -86,6 +96,25 @@ def detect(url):
 
 
     cv2.imwrite('media/new.png',image)
+    img = Image.fromarray(image)
+
+
+
+    newUrl=url[7:].split(".")
+    nUrl=newUrl[0]+".png"
+    tempfile_io =StringIO.StringIO()
+    img.save(tempfile_io, format='PNG')
+    image_file = InMemoryUploadedFile(tempfile_io, None, nUrl,'image/png',tempfile_io.len, None)
+
+
+    # Once you have a Django file-like object, you may assign it to your ImageField
+    # and save.
+    if request.user.is_authenticated():
+        photo = Photos()
+        photo.image = image_file
+        user = User.objects.get(username=request.user.username)
+        photo.user = user
+        photo.save()
 
 
     return result
