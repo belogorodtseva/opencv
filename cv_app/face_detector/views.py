@@ -81,7 +81,7 @@ def detect(request, url):
     # Detect faces in the image
     faces = faceCascade.detectMultiScale(
         gray,
-        scaleFactor=1.1,
+        scaleFactor=1.2,
         minNeighbors=5,
         minSize=(30, 30),
         flags = cv2.CASCADE_SCALE_IMAGE
@@ -107,8 +107,6 @@ def detect(request, url):
     image_file = InMemoryUploadedFile(tempfile_io, None, nUrl,'image/png',tempfile_io.len, None)
 
 
-    # Once you have a Django file-like object, you may assign it to your ImageField
-    # and save.
     if request.user.is_authenticated():
         photo = Photos()
         photo.image = image_file
@@ -131,6 +129,6 @@ def about(request):
 def history(request):
 
     content = {
-
+        'Photos' : Photos.objects.filter(user=User.objects.get(username=request.user.username))
     }
     return render(request, 'history.html', content)
