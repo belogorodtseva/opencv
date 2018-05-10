@@ -67,3 +67,10 @@ body {
     font-size: 45px;
     cursor: pointer;
 }
+
+.group-photo {
+  width: 400px;
+  height: 200px;
+  background-size: contain;
+  background-repeat: no-repeat;
+}

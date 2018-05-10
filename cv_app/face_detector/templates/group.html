@@ -1,0 +1,62 @@
+{% extends "index.html" %}
+{% load staticfiles %}
+
+{% block headin %}
+
+{% endblock %}
+
+{% block content %}
+
+<h1>Group photo</h1>
+<hr>
+
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <div class="fileinput fileinput-new" data-provides="fileinput">
+    <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 300px; height: 200px; border-style:dashed; border-width:3px;"></div>
+    <div>
+      <span class="btn btn-default btn-file"><span class="fileinput-new">Select image</span><span class="fileinput-exists">Change</span>
+        <input type="file" name="myfile" accept="image/*"/>
+      </span>
+      <a href="#" class="btn btn-default fileinput-exists btn-danger glyphicon glyphicon-remove" data-dismiss="fileinput"></a>
+    </div>
+    <br>
+    <button type="submit" class="btn btn-success">Upload</button>
+  </div>
+  <hr>
+
+  <div class="result">
+    {% if result %}
+      {% if result != 666 %}
+        <div class="alert alert-success">
+          <strong>Success!</strong> {{ result }}
+        </div>
+        <div class="group-photo" style="background-image:url({{ photo.image.url }})">
+        </div>
+        {% for F in faces %}
+        <hr>
+          <p>Face # {{ F.id }}</p>
+          <p>sadness : {{ F.emotions.sadness }}</p>
+          <p>neutral : {{ F.emotions.neutral }}</p>
+          <p>contempt : {{ F.emotions.contempt }}</p>
+          <p>disgust : {{ F.emotions.disgust }}</p>
+          <p>anger : {{ F.emotions.anger }}</p>
+          <p>surprise : {{ F.emotions.surprise }}</p>
+          <p>fear : {{ F.emotions.fear }}</p>
+          <p>happiness : {{ F.emotions.happiness }}</p>
+        {% endfor %}
+      {% else %}
+      <div class="alert alert-danger">
+        <strong>No faces found! </strong>Try another image.
+      </div>
+      {% endif %}
+    {% endif %}
+  </div>
+
+{% endblock %}
+
+{% block scriptin %}
+<script>
+  $('.fileinput').fileinput();
+</script>
+{% endblock %}
