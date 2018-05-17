@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 {% block headin %}
-
+<script type="text/javascript" src="{% static "fusioncharts.js" %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -10,8 +10,54 @@
 <h1>Video</h1>
 <hr>
 
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <div class="fileinput fileinput-new" data-provides="fileinput">
+    <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 300px; height: 200px; border-style:dashed; border-width:3px;"></div>
+    <div>
+      <span class="btn btn-default btn-file"><span class="fileinput-new">Select video</span><span class="fileinput-exists">Change</span>
+        <input type="file" name="myfile" accept="video/*"/>
+      </span>
+      <a href="#" class="btn btn-default fileinput-exists btn-danger glyphicon glyphicon-remove" data-dismiss="fileinput"></a>
+    </div>
+    <br>
+    <button type="submit" class="btn btn-success">Upload</button>
+  </div>
+  <hr>
+
+  <div class="result">
+    {% if result %}
+      {% if result != 666 %}
+      <div class="alert alert-success">
+        <strong>Success!</strong>
+      </div>
+      <hr>
+      <div class="frames">
+        {% for F in Frames %}
+        <div class="frame" style="background-image:url({{ F.image.url }})">
+        </div>
+        {% endfor %}
+      </div>
+      <hr>
+      <div class="line_plot" id="chart-8">{{ video_plot_line|safe }}</div>
+      <hr>
+      <div style="text-align:center; font-size:18px;">
+        <strong>Emotions on Video</strong>
+      </div>
+      <br>
+      <div class="plots_video">
+        <div class="plot_video" id="chart-7">{{ video_plot|safe }}</div>
+      </div>
+      {% else %}
+
+      {% endif %}
+    {% endif %}
+  </div>
+
 {% endblock %}
 
 {% block scriptin %}
-
+<script>
+  $('.fileinput').fileinput();
+</script>
 {% endblock %}

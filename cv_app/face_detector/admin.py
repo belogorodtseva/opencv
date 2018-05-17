@@ -9,3 +9,8 @@ from face_detector.models import *
 admin.site.register(Emotion)
 admin.site.register(FaceOnGroup)
 admin.site.register(GroupPhoto)
+
+
+admin.site.register(Face)
+admin.site.register(FramePhoto)
+admin.site.register(Video)

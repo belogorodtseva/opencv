@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 {% block headin %}
-
+<script type="text/javascript" src="{% static "fusioncharts.js" %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -29,22 +29,37 @@
     {% if result %}
       {% if result != 666 %}
         <div class="alert alert-success">
-          <strong>Success!</strong> {{ result }}
+          <strong>Success!</strong> {{ result.0 }} people was found!
+          <br>
+          <strong>{{ result.1 }} male</strong> was found!
+          <br>
+          <strong>{{ result.2 }} female</strong> was found!
         </div>
         <div class="group-photo" style="background-image:url({{ photo.image.url }})">
         </div>
-        {% for F in faces %}
         <hr>
-          <p>Face # {{ F.id }}</p>
-          <p>sadness : {{ F.emotions.sadness }}</p>
-          <p>neutral : {{ F.emotions.neutral }}</p>
-          <p>contempt : {{ F.emotions.contempt }}</p>
-          <p>disgust : {{ F.emotions.disgust }}</p>
-          <p>anger : {{ F.emotions.anger }}</p>
-          <p>surprise : {{ F.emotions.surprise }}</p>
-          <p>fear : {{ F.emotions.fear }}</p>
-          <p>happiness : {{ F.emotions.happiness }}</p>
-        {% endfor %}
+        <div style="text-align:center; font-size:18px;">
+          <strong>Emotions</strong>
+        </div>
+        <br>
+        <div class="plots">
+          <div class="plot" id="chart-3">{{ all_plot|safe }}</div>
+          <div class="plot" id="chart-1">{{ female_plot|safe }}</div>
+          <div class="plot" id="chart-2">{{ male_plot|safe }}</div>
+        </div>
+        <hr>
+        <div style="text-align:center; font-size:18px;">
+          <strong>Smile</strong>
+        </div>
+        <br>
+        <div class="plots">
+          <div class="plot" id="chart-4">{{ all_plot_smile|safe }}</div>
+          <div class="plot" id="chart-5">{{ female_plot_smile|safe }}</div>
+          <div class="plot" id="chart-6">{{ male_plot_smile|safe }}</div>
+        </div>
+        <hr>
+
+
       {% else %}
       <div class="alert alert-danger">
         <strong>No faces found! </strong>Try another image.
@@ -53,9 +68,11 @@
     {% endif %}
   </div>
 
+
 {% endblock %}
 
 {% block scriptin %}
+
 <script>
   $('.fileinput').fileinput();
 </script>

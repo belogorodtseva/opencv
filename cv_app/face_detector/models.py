@@ -51,5 +51,6 @@ class GroupPhoto(models.Model):
 
 class FaceOnGroup(models.Model):
     gender = models.CharField(max_length=20, default='female', blank=False, null=False)
+    smile = models.DecimalField(max_digits=5, decimal_places=2, default=0, blank=False, null=False)
     emotions = models.ForeignKey(Emotion, blank=True, null=True)
     photo = models.ForeignKey(GroupPhoto, blank=False, null=False)
