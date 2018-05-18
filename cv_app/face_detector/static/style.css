@@ -109,3 +109,7 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
 }
+
+svg g:nth-of-type(2) text{
+  display: none; 
+}

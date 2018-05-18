@@ -43,7 +43,7 @@ def video_cut(url,video):
     success,image = vidcap.read()
     count = 1
     numOfFrames = 0
-    numFrameToSave = 25
+    numFrameToSave = 100
     success = True
 
     while success:
@@ -114,9 +114,7 @@ def draw_plot_video(video):
 
     for frame in videoFrames:
         faces = Face.objects.filter(frame=frame)
-
-        for face in faces:
-            array[best_emotion(face)] += 1
+        array[(best_emotion_faces(faces))] += 1
 
     # Chart data is passed to the `dataSource` parameter, as dict, in the form of key-value pairs.
     dataSource = {}
@@ -135,7 +133,7 @@ def draw_plot_video(video):
 
     # The data for the chart should be in an array where each element of the array is a JSON object
     # having the `label` and `value` as key value pair.
-
+    print (array)
     dataSource['data'] = []
     # Iterate through the data in `Revenue` model and insert in to the `dataSource['data']` list.
     count = 0;
@@ -163,19 +161,40 @@ def draw_line_video(video):
     # Chart data is passed to the `dataSource` parameter, as dict, in the form of key-value pairs.
     dataSource = {}
     dataSource['chart'] = {
-        "caption": "VIDEO",
-            "subCaption": "Emotions",
-            "caption": "FRAMES",
+        "caption": "FRAMES",
             "subCaption": "Emotions",
             "showValues": "0",
-            "rotateLabels": "1",
+            "yAxisName": "EMOTIONS",
             "slantLabels": "1",
             "showHoverEffect": "1",
             "canvasPadding": "10",
             "showaxislines": "1",
-            "anchorRadius": "4",
-            "anchorHoverRadius": "8",
-            "theme": "carbon"
+            "anchorRadius": "5",
+            "anchorHoverRadius": "15",
+            "anchorBgColor": "#ffffff",
+            "lineThickness": "2",
+            "paletteColors": "#0075c2",
+            "plotHoverEffect":"1",
+            "baseFontColor": "#333333",
+            "captionFontSize": "14",
+            "subcaptionFontSize": "14",
+            "subcaptionFontBold": "0",
+            "showBorder": "0",
+            "bgColor": "#ffffff",
+            "showShadow": "0",
+            "canvasBgColor": "#ffffff",
+            "canvasBorderAlpha": "0",
+            "divlineAlpha": "100",
+            "divlineColor": "#999999",
+            "divlineThickness": "1",
+            "divLineDashed": "1",
+            "divLineDashLen": "1",
+            "showXAxisLine": "1",
+            "xAxisLineThickness": "1",
+            "xAxisLineColor": "#999999",
+            "toolTipBgColor": "#ffffff",
+            "showToolTipShadow": "1"
+
         }
 
     # The data for the chart should be in an array where each element of the array is a JSON object
@@ -188,8 +207,8 @@ def draw_line_video(video):
     for f in frames:
       data = {}
       data['value'] = int(f)
-      #data['displayValue'] = emotionList[f]
       data['label'] = str(str(count) + 'frame')
+      data['toolText'] = str(emotionList[f])
       dataSource['data'].append(data)
       count+=1;
 
