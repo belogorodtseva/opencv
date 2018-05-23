@@ -23,6 +23,10 @@ body {
 
 }
 
+#datePicker {
+  width: 25%;
+}
+
 .column {
     float: left;
     width: 20%;
@@ -110,6 +114,24 @@ body {
   background-size: cover;
 }
 
+.diary {
+	flex-wrap: wrap;
+	flex-direction: row;
+	justify-content: space-around;
+	display: flex;
+	height: 500px;
+	width: 100%;
+	margin: auto;
+}
+.diary > .day {
+  width: 16%;
+	border: 5px solid white;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+
 svg g:nth-of-type(2) text{
-  display: none; 
+  display: none;
 }

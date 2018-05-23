@@ -14,3 +14,5 @@ admin.site.register(GroupPhoto)
 admin.site.register(Face)
 admin.site.register(FramePhoto)
 admin.site.register(Video)
+
+admin.site.register(DiaryPhoto)

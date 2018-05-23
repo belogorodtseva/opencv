@@ -35,6 +35,7 @@ import cognitive_face as CF
 import requests
 from io import BytesIO
 from PIL import Image, ImageDraw, ImageFont
+from fusioncharts import FusionCharts
 
 import matplotlib.pyplot as plt
 
@@ -43,6 +44,8 @@ from random import randint
 
 from group import *
 from video import *
+from diary import *
+
 
 ########################## PAGES
 
@@ -82,10 +85,39 @@ def index(request):
 
 @login_required(login_url='/login/')
 def diary(request):
-    content = {
+    if request.method == 'POST' and request.FILES['myfile']:
+        myfile = request.FILES['myfile']
+        fs = FileSystemStorage()
+        filename = fs.save(myfile.name, myfile)
+        uploaded_file_url = fs.url(filename)
+        photo = DiaryPhoto()
+        photo.image = myfile
+        user = User.objects.get(username=request.user.username)
+        photo.user = user
+        if request.POST['date']:
+            photo.date = request.POST['date']
+        photo.save()
+        result =  diary_detect(request,uploaded_file_url,photo)
+        line_plot=draw_line_plot(user)
+        pie_plot=draw_pie_plot(user)
+        return render(request, 'diary.html', {
+            'result': result,
+            'photo' : photo,
+            'line_plot': line_plot.render(),
+            'pie_plot': pie_plot.render(),
+            'Diary' : DiaryPhoto.objects.filter(user=user)
 
-    }
-    return render(request, 'diary.html', content)
+        })
+    else:
+        user = User.objects.get(username=request.user.username)
+        line_plot=draw_line_plot(user)
+        pie_plot=draw_pie_plot(user)
+        content = {
+            'line_plot': line_plot.render(),
+            'pie_plot': pie_plot.render(),
+            'Diary' : DiaryPhoto.objects.filter(user=user)
+        }
+        return render(request, 'diary.html', content)
 
 
 ### GROUP PHOTO PAGE

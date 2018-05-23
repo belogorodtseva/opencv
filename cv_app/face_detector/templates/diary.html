@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 {% block headin %}
-
+<script type="text/javascript" src="{% static "fusioncharts.js" %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -10,8 +10,70 @@
 <h1>Diary</h1>
 <hr>
 
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <div class="fileinput fileinput-new" data-provides="fileinput">
+    <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 300px; height: 200px; border-style:dashed; border-width:3px;"></div>
+    <div>
+      <span class="btn btn-default btn-file"><span class="fileinput-new">Select image</span><span class="fileinput-exists">Change</span>
+        <input type="file" name="myfile" accept="image/*"/>
+      </span>
+      <a href="#" class="btn btn-default fileinput-exists btn-danger glyphicon glyphicon-remove" data-dismiss="fileinput"></a>
+    </div>
+  </div>
+  <br>
+  <input type="date" id="datePicker" class="form-control" name="date">
+  <br>
+  <br>
+  <button type="submit" class="btn btn-success">Upload</button>
+  <hr>
+</form>
+
+  <div class="result">
+    {% if result %}
+      {% if result != 666 %}
+        <div class="alert alert-success">
+          <strong>Success!</strong>{{ result }}
+        </div>
+      {% else %}
+      <div class="alert alert-danger">
+        <strong>No faces found! </strong>Try another image.
+      </div>
+      {% endif %}
+    {% endif %}
+
+    <hr>
+
+    <div class="diary">
+      {% for F in Diary %}
+      <div class="day" style="background-image:url({{ F.image.url }})">
+      </div>
+      {% endfor %}
+    </div>
+    <hr>
+
+
+    <div style="text-align:center; font-size:18px;">
+      <strong>LINE</strong>
+    </div>
+    <br>
+    <div class="line_plot" id="chart-11">{{ line_plot|safe }}</div>
+    <hr>
+
+    <div style="text-align:center; font-size:18px;">
+      <strong>PIE</strong>
+    </div>
+    <br>
+    <div class="plots_video">
+      <div class="plot_video" id="chart-10">{{ pie_plot|safe }}</div>
+    </div>
+    <hr>
+  </div>
+
 {% endblock %}
 
 {% block scriptin %}
-
+<script>
+  $('.fileinput').fileinput();
+</script>
 {% endblock %}

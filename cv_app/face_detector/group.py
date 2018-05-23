@@ -2,7 +2,7 @@ import cognitive_face as CF
 from fusioncharts import FusionCharts
 from face_detector.models import *
 
-KEY = '3f1480ceef0742bd8e317e72473b0ca6'  # Replace with a valid subscription key (keeping the quotes in place).
+KEY = '45849a53156a4f59a7fa8848d734824f'  # Replace with a valid subscription key (keeping the quotes in place).
 CF.Key.set(KEY)
 
 BASE_URL = 'https://westcentralus.api.cognitive.microsoft.com/face/v1.0'  # Replace with your regional Base URL

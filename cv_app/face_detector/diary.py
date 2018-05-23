@@ -23,103 +23,53 @@ def best_emotion(face):
                         face.emotions.happiness ]
     return(emotionValues.index(max(emotionValues)))
 
-def best_emotion_faces(faces):
+def diary_detect(request,img_url,photo):
 
-    emotionValues = [ 0,0,0,0,0,0,0,0 ]
-    for face in faces:
-        emotionValues[0] += face.emotions.sadness
-        emotionValues[1] += face.emotions.neutral
-        emotionValues[2] += face.emotions.contempt
-        emotionValues[3] += face.emotions.disgust
-        emotionValues[4] += face.emotions.anger
-        emotionValues[5] += face.emotions.surprise
-        emotionValues[6] += face.emotions.fear
-        emotionValues[7] += face.emotions.happiness
-    return(emotionValues.index(max(emotionValues)))
+    url = img_url[1:]
 
-def video_cut(url,video):
-    print (url)
-    vidcap = cv2.VideoCapture(url[1:])
-    success,image = vidcap.read()
-    count = 1
-    numOfFrames = 0
-    numFrameToSave = 100
-    success = True
-
-    while success:
-
-        if (numOfFrames % numFrameToSave ==0):
-            frame = FramePhoto()
-            frame.video = video
-            cv2.imwrite("media/frame%d.jpg" % count, image)
-            reopen = open("media/frame%d.jpg" % count, "rb")
-            django_file = File(reopen)
-            frame = FramePhoto()
-            frame.video = video
-            frame.image.save('image.jpg', django_file, save=True)
-            result = frame_detect(frame, "media/frame%d.jpg" % count)
-            print (result)
-            print 'save'
-            count += 1     # save frame as JPEG file
-
-        success,image = vidcap.read()
-        numOfFrames += 1
-    count -= 1
-
-def frame_detect(frame,url):
-
-    faces = CF.face.detect(url, face_id=True, landmarks=False, attributes='gender,emotion')
+    faces = CF.face.detect(url, face_id=True, landmarks=False, attributes='emotion')
     faceCount = 0
-    maleCounter = 0
-    femaleCounter = 0
 
     for face in faces:
-        faceOnFrame = Face()
-        faceOnFrame.frame = frame
-        emotionOnFace = Emotion()
+        emotionOnDiary = Emotion()
         fa = face["faceAttributes"]
         emotion = fa["emotion"]
-        faceOnFrame.gender = fa["gender"]
-        if fa["gender"] == 'female':
-            femaleCounter+=1
-        if fa["gender"] == 'male':
-            maleCounter+=1
+
         emotions = []
         for e in emotion:
             emotions.append(emotion[e])
-        emotionOnFace.sadness = emotions[0]
-        emotionOnFace.neutral = emotions[1]
-        emotionOnFace.contempt = emotions[2]
-        emotionOnFace.disgust = emotions[3]
-        emotionOnFace.anger = emotions[4]
-        emotionOnFace.surprise = emotions[5]
-        emotionOnFace.fear = emotions[6]
-        emotionOnFace.happiness = emotions[7]
-        emotionOnFace.save()
-        faceOnFrame.emotions = emotionOnFace
-        faceOnFrame.save()
+        emotionOnDiary.sadness = emotions[0]
+        emotionOnDiary.neutral = emotions[1]
+        emotionOnDiary.contempt = emotions[2]
+        emotionOnDiary.disgust = emotions[3]
+        emotionOnDiary.anger = emotions[4]
+        emotionOnDiary.surprise = emotions[5]
+        emotionOnDiary.fear = emotions[6]
+        emotionOnDiary.happiness = emotions[7]
+        emotionOnDiary.save()
+        photo.emotions = emotionOnDiary
+        photo.save()
         faceCount += 1
 
     if faceCount == 0:
         return(666)
     else:
-        return([faceCount,maleCounter,femaleCounter])
+        return(emotions)
 
-def draw_plot_video(video):
+def draw_pie_plot(user):
     emotionList = ['sadness', 'neutral', 'contempt', 'disgust', 'anger', 'surprise', 'fear', 'happiness']
 
     array = [ 0, 0 ,0, 0, 0, 0, 0, 0 ]
 
-    videoFrames = FramePhoto.objects.filter(video=video)
+    photos = DiaryPhoto.objects.filter(user=user)
 
-    for frame in videoFrames:
-        faces = Face.objects.filter(frame=frame)
-        array[(best_emotion_faces(faces))] += 1
+    for face in photos:
+        array[(best_emotion(face))] += 1
 
     # Chart data is passed to the `dataSource` parameter, as dict, in the form of key-value pairs.
     dataSource = {}
     dataSource['chart'] = {
-        "caption": "VIDEO",
+        "caption": "DIARY",
             "subCaption": "Emotions",
             "startingangle": "120",
             "showlabels": "0",
@@ -144,24 +94,23 @@ def draw_plot_video(video):
       dataSource['data'].append(data)
       count+=1;
 
-    pie3d = FusionCharts("pie3d", "ex-7" , "100%", "400", "chart-7", "json", dataSource)
+    pie3d = FusionCharts("pie3d", "ex-10" , "100%", "400", "chart-10", "json", dataSource)
 
     return pie3d
 
-def draw_line_video(video):
+def draw_line_plot(user):
     emotionList = ['sadness', 'neutral', 'contempt', 'disgust', 'anger', 'surprise', 'fear', 'happiness']
 
-    frames = []
-    videoFrames = FramePhoto.objects.filter(video=video)
+    diary = []
+    photos = DiaryPhoto.objects.filter(user=user)
 
-    for frame in videoFrames:
-        faces = Face.objects.filter(frame=frame)
-        frames.append(best_emotion_faces(faces))
+    for face in photos:
+        diary.append(best_emotion(face))
 
     # Chart data is passed to the `dataSource` parameter, as dict, in the form of key-value pairs.
     dataSource = {}
     dataSource['chart'] = {
-        "caption": "FRAMES",
+        "caption": "PHOTOS",
             "subCaption": "Emotions",
             "showValues": "0",
             "yAxisName": "EMOTIONS",
@@ -204,14 +153,14 @@ def draw_line_video(video):
 
     # Iterate through the data in `Revenue` model and insert in to the `dataSource['data']` list.
     count = 1;
-    for f in frames:
+    for f in diary:
       data = {}
       data['value'] = int(f)
-      data['label'] = str(str(count) + 'frame')
+      data['label'] = str(str(count) + 'day')
       data['toolText'] = str(emotionList[f])
       dataSource['data'].append(data)
       count+=1;
 
-    pie3d = FusionCharts("line", "ex-8" , "100%", "400", "chart-8", "json", dataSource)
+    pie3d = FusionCharts("line", "ex-11" , "100%", "400", "chart-11", "json", dataSource)
 
     return pie3d
