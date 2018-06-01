@@ -35,8 +35,67 @@
           <br>
           <strong>{{ result.2 }} female</strong> was found!
         </div>
+        <div style="width:100%; height:300px;">
         <div class="group-photo" style="background-image:url({{ photo.image.url }})">
         </div>
+        <div class="group-smile">
+          <div class="smile-face">
+            <img class="smile" style="height:10%;" src="/media/sadness.png">
+            <img class="smile" style="height:10%;" src="/media/neutral.png">
+            <img class="smile" style="height:10%;" src="/media/contempt.png">
+            <img class="smile" style="height:10%;" src="/media/disgust.png">
+
+            <img class="smile" style="height:10%;" src="/media/anger.png">
+            <img class="smile" style="height:10%;" src="/media/surprise.png">
+            <img class="smile" style="height:10%;" src="/media/fear.png">
+            <img class="smile" style="height:10%;" src="/media/happiness.png">
+          </div>
+          <div class="smile-lines">
+
+            <div class="smile-line">
+              <div class="smile-fill" style="width:{{line_result.0}}%;">
+                  <p>sadness</p>
+              </div>
+            </div>
+            <div class="smile-line">
+              <div class="smile-fill" style="width:{{line_result.1}}%;">
+                <p>neutral</p>
+              </div>
+            </div>
+            <div class="smile-line">
+              <div class="smile-fill" style="width:{{line_result.2}}%;">
+                <p>contempt</p>
+              </div>
+            </div>
+            <div class="smile-line">
+              <div class="smile-fill" style="width:{{line_result.3}}%;">
+                <p>disgust</p>
+              </div>
+            </div>
+            <div class="smile-line">
+              <div class="smile-fill" style="width:{{line_result.4}}%;">
+                <p>anger</p>
+              </div>
+            </div>
+            <div class="smile-line">
+              <div class="smile-fill" style="width:{{line_result.5}}%;">
+                <p>surprise</p>
+              </div>
+            </div>
+            <div class="smile-line">
+              <div class="smile-fill" style="width:{{line_result.6}}%;">
+                <p>fear</p>
+              </div>
+            </div>
+            <div class="smile-line">
+              <div class="smile-fill" style="width:{{line_result.7}}%;">
+                <p>happiness</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+
         <hr>
         <div style="text-align:center; font-size:18px;">
           <strong>Emotions</strong>

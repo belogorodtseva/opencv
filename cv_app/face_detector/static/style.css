@@ -73,10 +73,62 @@ body {
 }
 
 .group-photo {
-  width: 500px;
+  width: 50%;
   height: 300px;
+  background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
+  float: left;
+}
+
+.group-smile {
+  width: 50%;
+  height: 300px;
+  float: right;
+}
+
+.smile-face {
+  width: 7%;
+  height: 100%;
+  float: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.smile {
+  height: 10%;
+}
+
+.smile-lines {
+  width: 90%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  float: right;
+}
+
+.smile-line {
+  height: 10%;
+  width: 90%;
+  float: left;
+  background-color: #bfdef5;
+  border-radius: 10px;
+  box-shadow: inset 0px 0px 5px #4b6679;
+}
+
+.smile-fill {
+  height: 100%;
+  background-color: #f1c43a;
+  border-radius: 10px;
+  box-shadow: inset 0px 0px 5px #80671b;
+}
+
+.smile-line p {
+  padding: 5px 10px;
+  font-weight: bold;
+  color: rgba(0,0,0,.5);
 }
 
 .plots {
@@ -101,6 +153,7 @@ body {
   width: 100%;
 }
 
+
 .frames {
   display: flex;
   justify-content: space-around;
@@ -119,16 +172,25 @@ body {
 	flex-direction: row;
 	justify-content: space-around;
 	display: flex;
-	height: 500px;
+	height: 600px;
 	width: 100%;
 	margin: auto;
+    background-color: #dff0d8;
 }
 .diary > .day {
   width: 16%;
-	border: 5px solid white;
+	border: 10px solid #dff0d8;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+
+}
+
+.date {
+  background-color: rgba(255, 255, 255, 0.73);
+  color: #367136;
+  font-weight: bold;
+  padding: 5px;
 }
 
 

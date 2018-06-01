@@ -5,7 +5,7 @@ import cv2
 import requests
 from django.core.files import File
 
-KEY = '45849a53156a4f59a7fa8848d734824f'  # Replace with a valid subscription key (keeping the quotes in place).
+KEY = '3f3fcb1528b14467bb1756614cd653e4'  # Replace with a valid subscription key (keeping the quotes in place).
 CF.Key.set(KEY)
 
 BASE_URL = 'https://westcentralus.api.cognitive.microsoft.com/face/v1.0'  # Replace with your regional Base URL

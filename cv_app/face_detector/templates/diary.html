@@ -43,10 +43,22 @@
     {% endif %}
 
     <hr>
-
+    <div class="alert alert-success" style="font-size: 20px;">
+      <strong>JUNE '18</strong>
+    </div>
     <div class="diary">
       {% for F in Diary %}
-      <div class="day" style="background-image:url({{ F.image.url }})">
+      <div class="day" title=
+"sadness = {{F.emotions.sadness}}
+neutral = {{F.emotions.neutral}}
+contempt = {{F.emotions.contempt}}
+disgust = {{F.emotions.disgust}}
+anger = {{F.emotions.anger}}
+surprise = {{F.emotions.surprise}}
+fear = {{F.emotions.fear}}
+happiness = {{F.emotions.happiness}}"
+            style="background-image:url({{ F.image.url }})">
+          <p class="date">  {{F.date}} </p>
       </div>
       {% endfor %}
     </div>

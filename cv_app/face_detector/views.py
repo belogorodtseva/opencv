@@ -135,6 +135,7 @@ def group(request):
         photo.user = user
         photo.save()
         result =  group_detect(request,uploaded_file_url,photo)
+        line_r=line_result(photo)
         all_plot=draw_plots_all(photo)
         male_plot=draw_plots_male(photo)
         female_plot=draw_plots_female(photo)
@@ -143,6 +144,7 @@ def group(request):
         female_plot_smile=draw_plots_female_smile(photo)
         return render(request, 'group.html', {
             'result': result,
+            'line_result': line_r,
             'photo' : photo,
             'all_plot': all_plot.render(),
             'male_plot': male_plot.render(),
@@ -198,107 +200,3 @@ def history(request):
         'Photos' : HomePagePhoto.objects.filter(user=User.objects.get(username=request.user.username))
     }
     return render(request, 'history.html', content)
-
-
-
-
-
-# ########################## FUNCTIONS
-# def detect(request, url):
-#
-#     cascPath = "haarcascade_frontalface_default.xml"
-#
-#     # Create the haar cascade
-#     faceCascade = cv2.CascadeClassifier(cascPath)
-#
-#     # Read the image
-#     image = cv2.imread(url[1:])
-#
-#     gray = cv2.cvtColor(image, cv2.COLOR_BGRA2GRAY)
-#
-#
-#     # Detect faces in the image
-#     faces = faceCascade.detectMultiScale(
-#         gray,
-#         scaleFactor=1.2,
-#         minNeighbors=5,
-#         minSize=(30, 30),
-#         flags = cv2.CASCADE_SCALE_IMAGE
-#     )
-#     if len(faces)>0:
-#         result = "Found {0} faces!".format(len(faces))
-#     else:
-#         result = 2
-#
-#     for (x, y, w, h) in faces:
-#         cv2.rectangle(image, (x, y), (x+w, y+h), (0, 250, 0), 4)
-#
-#
-#     cv2.imwrite('media/new.png',image)
-#     img = Image.fromarray(image)
-#
-#
-#
-#     newUrl=url[7:].split(".")
-#     nUrl=newUrl[0]+".png"
-#     tempfile_io =StringIO.StringIO()
-#     img.save(tempfile_io, format='PNG')
-#     image_file = InMemoryUploadedFile(tempfile_io, None, nUrl,'image/png',tempfile_io.len, None)
-#
-#
-#     if request.user.is_authenticated():
-#         photo = HomePagePhoto()
-#         photo.image = image_file
-#         user = User.objects.get(username=request.user.username)
-#         photo.user = user
-#         photo.save()
-#
-#
-#     return result
-#
-#
-# def emotion_detect(request,img_url):
-#     url="https://how-old.net/Images/faces2/main004.jpg"
-#     print(url)
-#     faces = CF.face.detect(url, face_id=True, landmarks=False, attributes='gender,emotion')
-#     fnt = ImageFont.truetype('Roboto-Bold.ttf', 15)
-#     #Download the image from the url
-#     response = requests.get(url)
-#     img = Image.open(BytesIO(response.content))
-#     toShow=""
-#     #For each face returned use the face rectangle and draw a red box.
-#     draw = ImageDraw.Draw(img)
-#     for face in faces:
-#         draw.rectangle(getRectangle(face), outline='red')
-#         fa = face["faceAttributes"]
-#         emotion = fa["emotion"]
-#         for e in emotion:
-#             toShow+=e+"="+str(emotion[e])+"\n"
-#
-#         print(toShow)
-#         draw.text(getEmotionLocation(face), toShow, font=fnt, fill='red')
-#
-#
-#     #Display the image in the users default image browser.
-#     img.show()
-#     print(faces)
-#
-#     return(toShow)
-#
-#
-# #Convert width height to a point in a rectangle
-# def getRectangle(faceDictionary):
-#     rect = faceDictionary['faceRectangle']
-#     left = rect['left']
-#     top = rect['top']
-#     bottom = left + rect['height']
-#     right = top + rect['width']
-#     return ((left, top), (bottom, right))
-#
-#
-# #Convert width height to a point in a rectangle
-# def getEmotionLocation(faceDictionary):
-#     rect = faceDictionary['faceRectangle']
-#     left = rect['left']+10
-#     top = rect['top']+10
-#     return ((left, top))

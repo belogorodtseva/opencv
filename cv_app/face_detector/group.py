@@ -2,7 +2,7 @@ import cognitive_face as CF
 from fusioncharts import FusionCharts
 from face_detector.models import *
 
-KEY = '45849a53156a4f59a7fa8848d734824f'  # Replace with a valid subscription key (keeping the quotes in place).
+KEY = '3f3fcb1528b14467bb1756614cd653e4'  # Replace with a valid subscription key (keeping the quotes in place).
 CF.Key.set(KEY)
 
 BASE_URL = 'https://westcentralus.api.cognitive.microsoft.com/face/v1.0'  # Replace with your regional Base URL
@@ -62,6 +62,23 @@ def group_detect(request,img_url,photo):
         return(666)
     else:
         return([faceCount,maleCounter,femaleCounter])
+
+def line_result(photo):
+    faces = FaceOnGroup.objects.filter(photo=photo)
+    array = [ 0, 0 ,0, 0, 0, 0, 0, 0 ]
+    resultA = []
+
+    for face in faces:
+        array[best_emotion(face)] += 1
+
+    sumA = sum(array)
+
+    for a in array:
+        a = a*100/sumA
+        resultA.append(a)
+
+    return (resultA)
+
 
 def draw_plots_all(photo):
     emotionList = ['sadness', 'neutral', 'contempt', 'disgust', 'anger', 'surprise', 'fear', 'happiness']
