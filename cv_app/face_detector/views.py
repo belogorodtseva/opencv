@@ -135,24 +135,30 @@ def group(request):
         photo.user = user
         photo.save()
         result =  group_detect(request,uploaded_file_url,photo)
-        line_r=line_result(photo)
-        all_plot=draw_plots_all(photo)
-        male_plot=draw_plots_male(photo)
-        female_plot=draw_plots_female(photo)
-        all_plot_smile=draw_plots_all_smile(photo)
-        male_plot_smile=draw_plots_male_smile(photo)
-        female_plot_smile=draw_plots_female_smile(photo)
-        return render(request, 'group.html', {
-            'result': result,
-            'line_result': line_r,
-            'photo' : photo,
-            'all_plot': all_plot.render(),
-            'male_plot': male_plot.render(),
-            'female_plot': female_plot.render(),
-            'all_plot_smile': all_plot_smile.render(),
-            'male_plot_smile': male_plot_smile.render(),
-            'female_plot_smile': female_plot_smile.render()
-        })
+        if result !=666:
+            line_r=line_result(photo)
+            all_plot=draw_plots_all(photo)
+            male_plot=draw_plots_male(photo)
+            female_plot=draw_plots_female(photo)
+            all_plot_smile=draw_plots_all_smile(photo)
+            male_plot_smile=draw_plots_male_smile(photo)
+            female_plot_smile=draw_plots_female_smile(photo)
+            return render(request, 'group.html', {
+                'result': result,
+                'line_result': line_r,
+                'photo' : photo,
+                'all_plot': all_plot.render(),
+                'male_plot': male_plot.render(),
+                'female_plot': female_plot.render(),
+                'all_plot_smile': all_plot_smile.render(),
+                'male_plot_smile': male_plot_smile.render(),
+                'female_plot_smile': female_plot_smile.render()
+            })
+        else:
+            return render(request, 'group.html', {
+                'result': result,
+                'photo' : photo,
+            })
     return render(request, 'group.html')
 
 
@@ -173,12 +179,15 @@ def video(request):
         video_plot_line = draw_line_video(video)
         frames = FramePhoto.objects.filter()
         result = 1
+        smiles = show_smile(video)
         return render(request, 'video.html', {
+            'filename': uploaded_file_url,
             'result': result,
             'video': video,
             'video_plot': video_plot.render(),
             'video_plot_line': video_plot_line.render(),
-            'Frames' : FramePhoto.objects.filter(video=video)
+            'Frames' : FramePhoto.objects.filter(video=video),
+            'smiles' : smiles,
         })
     return render(request, 'video.html')
 

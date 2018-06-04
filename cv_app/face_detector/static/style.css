@@ -8,6 +8,11 @@ body {
     font-family: Arial;
 }
 
+img {
+  width: auto;
+  height: 100%;
+}
+
 
 .fileinput-new .fileinput-preview {
   display: none;
@@ -109,6 +114,13 @@ body {
   float: right;
 }
 
+.smiles_frame {
+  display: flex;
+  justify-content: space-around;
+  height: 80px;
+  margin-top: 20px;
+}
+
 .smile-line {
   height: 10%;
   width: 90%;
@@ -165,6 +177,7 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  margin: 1%;
 }
 
 .diary {

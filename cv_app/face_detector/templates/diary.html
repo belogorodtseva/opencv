@@ -3,6 +3,8 @@
 
 {% block headin %}
 <script type="text/javascript" src="{% static "fusioncharts.js" %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -64,28 +66,40 @@ happiness = {{F.emotions.happiness}}"
     </div>
     <hr>
 
+      <div id="content2" style="background-color:white;">
+        <div style="background-color:white; height:60px; font-size:20px;border-top: 50px solid white;"><center><strong>JUNE '18</strong></center></div>
 
-    <div style="text-align:center; font-size:18px;">
-      <strong>LINE</strong>
-    </div>
-    <br>
-    <div class="line_plot" id="chart-11">{{ line_plot|safe }}</div>
-    <hr>
+          <div style="border-top: 50px solid white;" class="line_plot" id="chart-11">{{ line_plot|safe }}</div>
 
-    <div style="text-align:center; font-size:18px;">
-      <strong>PIE</strong>
-    </div>
-    <br>
-    <div class="plots_video">
-      <div class="plot_video" id="chart-10">{{ pie_plot|safe }}</div>
-    </div>
-    <hr>
+          <div style="background-color:white; height:30px;"></div>
+          <div class="plots_video">
+            <div class="plot_video" id="chart-10">{{ pie_plot|safe }}</div>
+          </div>
+
+          <div style="background-color:white; height:30px;"></div>
+
+      </div>
   </div>
+
+  <button class="btn btn-info" id="cmd2">Download as PDF</button>
+  <br><br><br>
 
 {% endblock %}
 
 {% block scriptin %}
 <script>
   $('.fileinput').fileinput();
+</script>
+
+<script>
+$('#cmd2').click(function() {
+  	var options = {
+      "background": '#000',
+  	};
+  	var pdf = new jsPDF('p', 'pt', 'a4');
+  	pdf.addHTML($("#content2"), 0, 30, options, function() {
+    	pdf.save('diary.pdf');
+  	});
+});
 </script>
 {% endblock %}

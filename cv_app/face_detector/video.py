@@ -5,7 +5,7 @@ import cv2
 import requests
 from django.core.files import File
 
-KEY = '3f3fcb1528b14467bb1756614cd653e4'  # Replace with a valid subscription key (keeping the quotes in place).
+KEY = '8f3d905455194079be95fd5585657174'  # Replace with a valid subscription key (keeping the quotes in place).
 CF.Key.set(KEY)
 
 BASE_URL = 'https://westcentralus.api.cognitive.microsoft.com/face/v1.0'  # Replace with your regional Base URL
@@ -43,7 +43,7 @@ def video_cut(url,video):
     success,image = vidcap.read()
     count = 1
     numOfFrames = 0
-    numFrameToSave = 100
+    numFrameToSave = 15
     success = True
 
     while success:
@@ -147,6 +147,21 @@ def draw_plot_video(video):
     pie3d = FusionCharts("pie3d", "ex-7" , "100%", "400", "chart-7", "json", dataSource)
 
     return pie3d
+
+def show_smile(video):
+    emotionList = ['sadness', 'neutral', 'contempt', 'disgust', 'anger', 'surprise', 'fear', 'happiness']
+    frames = []
+    videoFrames = FramePhoto.objects.filter(video=video)
+
+    for frame in videoFrames:
+        faces = Face.objects.filter(frame=frame)
+        frames.append(str(emotionList[best_emotion_faces(faces)]))
+
+    print (frames)
+
+    return frames
+
+
 
 def draw_line_video(video):
     emotionList = ['sadness', 'neutral', 'contempt', 'disgust', 'anger', 'surprise', 'fear', 'happiness']

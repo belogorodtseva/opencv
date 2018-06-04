@@ -32,10 +32,19 @@
         <strong>Success!</strong>
       </div>
       <hr>
+      <video width="100%" height="340px" controls>
+        <source src="{{ filename }}" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
+      </video>
+      <hr>
       <div class="frames">
         {% for F in Frames %}
         <div class="frame" style="background-image:url({{ F.image.url }})">
         </div>
+        {% endfor %}
+      </div>
+      <div class="smiles_frame">
+        {% for s in smiles %}
+        <img class="smileX" src="/media/{{s}}.png">
         {% endfor %}
       </div>
       <hr>
